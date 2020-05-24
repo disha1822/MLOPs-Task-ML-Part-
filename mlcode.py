@@ -11,7 +11,7 @@ sns.set()
 
 i = sys.argv[1]
 
-dataset = pd.read_csv('wines.csv')
+dataset = pd.read_csv('/MLOPs/wines.csv')
 
 
 
