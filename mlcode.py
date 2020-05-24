@@ -3,16 +3,23 @@
 
 import sys
 import pandas as pd
-import seaborn as sns
-sns.set()
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
+import seaborn as sns
+sns.set()
 
-i = int(sys.argv[1])
+i = sys.argv[1]
+
 dataset = pd.read_csv('wines.csv')
 
+
+
 y = dataset['Class']
+
+
+print(y.value_counts())
+
 
 sns.scatterplot(x= dataset['Alcohol'], y = y)
 
@@ -23,21 +30,18 @@ print(y.head())
 
 X = dataset.drop('Class', axis = 1)
 
-print(X.head())
-
 print(X.info())
-
-
-####### Sequential Model Creation ##########
 
 model = Sequential()
 
 model.add(Dense(units = 12, input_shape = (13,), activation = 'relu', kernel_initializer = 'he_normal'))
 model.add(Dense(units = 16, activation = 'relu'))
 model.add(Dense(units = 8, activation = 'relu'))
-model.add(Dense(units = 10, activation = 'relu'))
-if i == 1:
+model.add(Dense(units = 12, activation = 'relu'))
+if i==1:
     model.add(Dense(units = 8, activation = 'relu'))
+    model.add(Dense(units = 12, activation = 'relu'))
+    model.add(Dense(units = 10, activation = 'relu'))
 
 ##### Output Layer ##########
 model.add(Dense(units = 3, activation = 'softmax'))
@@ -48,8 +52,7 @@ model.compile(optimizer = Adam(learning_rate = 0.001), loss = 'categorical_cross
 
 model.fit(X,y, epochs = 50)
 
-model.save("wine_model.h5")
 accuracy = int(model.history.history['accuracy'][-1]*100)
 
-print(accuracy)
+print("final accuracy ",accuracy)
 
